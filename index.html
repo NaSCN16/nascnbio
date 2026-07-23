@@ -1,0 +1,1699 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NaSCN16的小站</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(180deg, #a8d8ea 0%, #aa96da 50%, #6b48ff 100%);
+            min-height: 100vh;
+            font-family: "PingFang SC", "苹方", sans-serif;
+            padding: 0;
+            transition: background 0.5s ease, color 0.3s ease;
+            display: block;
+            overflow-y: auto;
+        }
+
+        .scroll-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 40px 30px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 45px 40px;
+            width: 1000px;
+            max-width: 100%;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transition: all 0.4s ease;
+            animation: fadeInDown 0.8s ease;
+            margin: 20px 0;
+            flex-shrink: 0;
+            overflow-x: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .avatar {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            background: #000000;
+            border: 3px solid rgba(255, 255, 255, 0.5);
+            margin: 0 auto 22px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .name {
+            font-size: 28px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 6px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            letter-spacing: 2px;
+        }
+
+        .title {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.75);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .age {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.55);
+            letter-spacing: 1px;
+            margin-bottom: 22px;
+            font-family: "Courier New", "SF Mono", monospace;
+            word-break: break-all;
+            line-height: 1.6;
+        }
+
+        .bio {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.8;
+            margin-bottom: 24px;
+        }
+
+        .divider {
+            width: 60px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.5);
+            margin: 0 auto 24px;
+            border-radius: 1px;
+        }
+
+        .section-title {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 3px;
+            margin-bottom: 14px;
+            text-align: left;
+            padding-left: 10px;
+        }
+
+        .achievement-list {
+            list-style: disc;
+            text-align: left;
+            padding-left: 28px;
+            margin-bottom: 24px;
+        }
+
+        .achievement-list li {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 14px;
+            line-height: 2;
+            letter-spacing: 1px;
+        }
+
+        .achievement-list li::marker {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .video-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: left;
+            transition: all 0.3s ease;
+        }
+
+        .video-card:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: scale(1.02);
+        }
+
+        .video-card a {
+            color: #ffffff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .video-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .video-info {
+            flex: 1;
+        }
+
+        .video-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .video-desc {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .tags {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 32px;
+        }
+
+        .tag {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            color: #ffffff;
+            padding: 7px 18px;
+            border-radius: 20px;
+            font-size: 12px;
+            letter-spacing: 1px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .tag:hover {
+            background: rgba(255, 255, 255, 0.35);
+            transform: scale(1.08);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .btn {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            color: #ffffff;
+            padding: 13px 38px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 3px;
+            font-size: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-family: "PingFang SC", "苹方", sans-serif;
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        .click-feedback {
+            margin-top: 16px;
+            color: #ffffff;
+            font-size: 14px;
+            line-height: 2;
+            min-height: 60px;
+        }
+
+        .fast-text {
+            color: #ffd700;
+            font-weight: bold;
+            animation: pulse 0.5s ease;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .slider-group {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            padding: 0 10px;
+            transition: opacity 0.3s ease;
+        }
+
+        .slider-section {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 14px;
+            padding: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            overflow-x: hidden;
+        }
+
+        .slider-section-label {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 12px;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        .slider-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+
+        .slider-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .slider-row label {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+            width: 16px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        input[type="range"] {
+            flex: 1;
+            min-width: 80px;
+            height: 5px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        input[type="range"]::-moz-range-track {
+            height: 5px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .hsv-input {
+            width: 50px;
+            max-width: 18vw;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            color: #fff;
+            padding: 3px 5px;
+            font-size: 11px;
+            font-family: "Courier New", monospace;
+            text-align: center;
+            outline: none;
+            flex-shrink: 1;
+        }
+
+        .hsv-input:focus {
+            border-color: rgba(255,255,255,0.6);
+            background: rgba(255,255,255,0.25);
+        }
+
+        .color-preview {
+            height: 24px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.3);
+            margin-top: 6px;
+        }
+
+        .hsv-warning {
+            color: #ffb347;
+            font-size: 12px;
+            text-align: center;
+            margin-top: 8px;
+            min-height: 18px;
+            animation: pulse 1.5s ease infinite;
+        }
+
+        .game-area {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .game-select {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .game-btn {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            color: #ffffff;
+            padding: 10px 24px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            font-size: 13px;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            font-family: "PingFang SC", "苹方", sans-serif;
+        }
+
+        .game-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .game-btn.active {
+            background: rgba(255, 255, 255, 0.35);
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+
+        .game-container {
+            background: rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: none;
+        }
+
+        .game-container.active {
+            display: block;
+        }
+
+        .game-info {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 14px;
+            margin-bottom: 10px;
+            line-height: 1.8;
+        }
+
+        .game-input-row {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .game-input {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            color: #fff;
+            padding: 8px 14px;
+            font-size: 14px;
+            outline: none;
+            width: 100px;
+            text-align: center;
+            font-family: "PingFang SC", "苹方", sans-serif;
+        }
+
+        .game-input:focus {
+            border-color: rgba(255,255,255,0.6);
+        }
+
+        .game-submit {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            font-family: "PingFang SC", "苹方", sans-serif;
+        }
+
+        .game-submit:hover {
+            background: rgba(255,255,255,0.35);
+        }
+
+        .snake-canvas {
+            border-radius: 10px;
+            display: block;
+            margin: 0 auto;
+            cursor: crosshair;
+            width: 100%;
+            max-width: 280px;
+            height: auto;
+        }
+
+        .snake-controls {
+            color: rgba(255,255,255,0.6);
+            font-size: 11px;
+            margin-top: 8px;
+        }
+
+        .social {
+            margin-top: 28px;
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+        }
+
+        .social a {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 17px;
+            font-weight: bold;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .social a:hover {
+            background: rgba(255, 255, 255, 0.35);
+            color: #ffffff;
+            transform: translateY(-3px);
+            border-color: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ========== 主题面板按钮 ========== */
+        .theme-toggle-btn {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            color: #fff;
+            padding: 10px 24px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            font-size: 13px;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            font-family: "PingFang SC", "苹方", sans-serif;
+            margin-top: 16px;
+        }
+
+        .theme-toggle-btn:hover {
+            background: rgba(255, 255, 255, 0.35);
+        }
+
+        .theme-options {
+            display: none;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .theme-options.show {
+            display: flex;
+        }
+
+        .theme-opt-btn {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(10px);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            cursor: pointer;
+            font-size: 12px;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            font-family: "PingFang SC", "苹方", sans-serif;
+        }
+
+        .theme-opt-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .theme-opt-btn.active {
+            background: rgba(255, 255, 255, 0.35);
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* ========== 泡泡画布 ========== */
+        .bubbles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            display: none;
+        }
+
+        /* ========== 主题：霓虹 ========== */
+        body.theme-neon {
+            background: #000000 !important;
+        }
+        body.theme-neon .card {
+            background: rgba(0, 0, 0, 0.85);
+            border: 2px solid var(--neon-glow, #ff1493);
+            box-shadow: 
+                0 0 25px var(--neon-glow, #ff1493),
+                0 0 50px var(--neon-glow-alpha, rgba(255,20,147,0.6)),
+                0 0 80px var(--neon-glow-alpha2, rgba(255,20,147,0.3)),
+                inset 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        body.theme-neon .name,
+        body.theme-neon .title,
+        body.theme-neon .section-title,
+        body.theme-neon .bio,
+        body.theme-neon .game-info,
+        body.theme-neon .click-feedback,
+        body.theme-neon .age {
+            text-shadow: 0 0 8px currentColor, 0 0 16px currentColor;
+        }
+        body.theme-neon .btn,
+        body.theme-neon .game-submit,
+        body.theme-neon .tag,
+        body.theme-neon .theme-toggle-btn,
+        body.theme-neon .theme-opt-btn,
+        body.theme-neon .game-btn {
+            box-shadow: 0 0 12px var(--neon-glow-alpha, rgba(255,20,147,0.6)), 0 0 25px var(--neon-glow-alpha2, rgba(255,20,147,0.3));
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+        body.theme-neon .btn:hover,
+        body.theme-neon .game-submit:hover,
+        body.theme-neon .tag:hover,
+        body.theme-neon .theme-toggle-btn:hover,
+        body.theme-neon .theme-opt-btn:hover,
+        body.theme-neon .game-btn:hover {
+            box-shadow: 0 0 25px var(--neon-glow-alpha, rgba(255,20,147,0.9)), 0 0 50px var(--neon-glow-alpha2, rgba(255,20,147,0.5));
+        }
+        body.theme-neon .social a {
+            box-shadow: 0 0 12px var(--neon-glow-alpha, rgba(255,20,147,0.5));
+        }
+        body.theme-neon .social a:hover {
+            box-shadow: 0 0 25px var(--neon-glow-alpha, rgba(255,20,147,0.9));
+        }
+        body.theme-neon .video-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--neon-glow-alpha, rgba(255,20,147,0.4));
+            box-shadow: 0 0 10px var(--neon-glow-alpha2, rgba(255,20,147,0.2));
+        }
+        body.theme-neon .divider {
+            background: var(--neon-glow-alpha, rgba(255,20,147,0.7));
+            box-shadow: 0 0 10px var(--neon-glow-alpha2, rgba(255,20,147,0.5));
+        }
+        body.theme-neon .slider-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: var(--neon-glow-alpha, rgba(255,20,147,0.4));
+        }
+        body.theme-neon .game-container {
+            background: rgba(0, 0, 0, 0.6);
+            border-color: var(--neon-glow-alpha, rgba(255,20,147,0.4));
+        }
+        body.theme-neon input[type="range"] {
+            background: var(--neon-glow-alpha, rgba(255,20,147,0.3));
+        }
+        body.theme-neon input[type="range"]::-webkit-slider-thumb {
+            box-shadow: 0 0 12px var(--neon-glow-alpha, rgba(255,20,147,0.7));
+        }
+
+        /* ========== 主题：Luna (Windows XP) ========== */
+        body.theme-luna {
+            background: #ece9d8 !important;
+        }
+        body.theme-luna .card {
+            background: #ffffff;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            border-radius: 8px;
+            border: 2px solid #0054e3;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+        }
+        body.theme-luna .card:hover {
+            background: #ffffff;
+            box-shadow: 3px 3px 15px rgba(0,0,0,0.4);
+        }
+        body.theme-luna .name {
+            color: #000;
+            text-shadow: none;
+            font-family: "Tahoma", "PingFang SC", "苹方", sans-serif;
+        }
+        body.theme-luna .title,
+        body.theme-luna .bio,
+        body.theme-luna .section-title,
+        body.theme-luna .game-info,
+        body.theme-luna .click-feedback,
+        body.theme-luna .age,
+        body.theme-luna .snake-controls {
+            color: #333;
+            text-shadow: none;
+        }
+        body.theme-luna .achievement-list li {
+            color: #333;
+        }
+        body.theme-luna .achievement-list li::marker {
+            color: #0054e3;
+        }
+        body.theme-luna .divider {
+            background: #0054e3;
+        }
+        body.theme-luna .btn,
+        body.theme-luna .game-submit,
+        body.theme-luna .tag,
+        body.theme-luna .theme-toggle-btn,
+        body.theme-luna .theme-opt-btn,
+        body.theme-luna .game-btn {
+            background: linear-gradient(180deg, #ffffff 0%, #ece9d8 100%);
+            color: #000;
+            border: 2px solid #0054e3;
+            border-radius: 4px;
+            box-shadow: 1px 1px 0 #fff inset, -1px -1px 0 #aca899 inset;
+            backdrop-filter: none;
+        }
+        body.theme-luna .btn:hover,
+        body.theme-luna .game-submit:hover,
+        body.theme-luna .tag:hover,
+        body.theme-luna .theme-toggle-btn:hover,
+        body.theme-luna .theme-opt-btn:hover,
+        body.theme-luna .game-btn:hover {
+            background: linear-gradient(180deg, #ffffff 0%, #d4d0c8 100%);
+        }
+        body.theme-luna .game-btn.active,
+        body.theme-luna .theme-opt-btn.active {
+            background: linear-gradient(180deg, #d4d0c8 0%, #ffffff 100%);
+        }
+        body.theme-luna .video-card {
+            background: #f5f5f0;
+            backdrop-filter: none;
+            border: 1px solid #d4d0c8;
+            border-radius: 6px;
+        }
+        body.theme-luna .video-card:hover {
+            background: #efefef;
+        }
+        body.theme-luna .video-title {
+            color: #000;
+        }
+        body.theme-luna .video-desc {
+            color: #666;
+        }
+        body.theme-luna .video-icon {
+            background: #ece9d8;
+            border: 1px solid #aca899;
+        }
+        body.theme-luna .social a {
+            background: linear-gradient(180deg, #ffffff 0%, #ece9d8 100%);
+            color: #000;
+            border: 2px solid #0054e3;
+            border-radius: 4px;
+            box-shadow: 1px 1px 0 #fff inset, -1px -1px 0 #aca899 inset;
+            backdrop-filter: none;
+        }
+        body.theme-luna .social a:hover {
+            background: linear-gradient(180deg, #ffffff 0%, #d4d0c8 100%);
+        }
+        body.theme-luna .slider-section {
+            background: #f5f5f0;
+            backdrop-filter: none;
+            border: 1px solid #d4d0c8;
+        }
+        body.theme-luna .slider-section-label {
+            color: #333;
+        }
+        body.theme-luna .slider-row label {
+            color: #333;
+        }
+        body.theme-luna .game-container {
+            background: #f5f5f0;
+            backdrop-filter: none;
+            border: 1px solid #d4d0c8;
+        }
+        body.theme-luna input[type="range"] {
+            background: #d4d0c8;
+            border-color: #aca899;
+            backdrop-filter: none;
+        }
+        body.theme-luna input[type="range"]::-webkit-slider-thumb {
+            background: linear-gradient(180deg, #ffffff 0%, #d4d0c8 100%);
+            border: 2px solid #0054e3;
+            border-radius: 3px;
+            box-shadow: none;
+        }
+        body.theme-luna .hsv-input {
+            background: #fff;
+            border: 2px solid #aca899;
+            color: #000;
+        }
+        body.theme-luna .game-input {
+            background: #fff;
+            border: 2px solid #aca899;
+            color: #000;
+        }
+        body.theme-luna .hsv-warning {
+            color: #cc0000;
+        }
+        body.theme-luna pre {
+            background: #f5f5f0 !important;
+            color: #000 !important;
+            border: 1px solid #d4d0c8 !important;
+        }
+        body.theme-luna .card a {
+            color: #0054e3;
+        }
+
+        /* ========== 主题：扁平化 (Win8/10/11风格) ========== */
+        body.theme-flat {
+            background: #f0f0f0 !important;
+        }
+        body.theme-flat .card {
+            background: #ffffff;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            border-radius: 0;
+            border: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        body.theme-flat .card:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+            background: #ffffff;
+        }
+        body.theme-flat .name,
+        body.theme-flat .title,
+        body.theme-flat .bio,
+        body.theme-flat .section-title,
+        body.theme-flat .game-info,
+        body.theme-flat .click-feedback,
+        body.theme-flat .age,
+        body.theme-flat .snake-controls {
+            color: #1a1a1a;
+            text-shadow: none;
+        }
+        body.theme-flat .achievement-list li {
+            color: #333;
+        }
+        body.theme-flat .achievement-list li::marker {
+            color: #0078d4;
+        }
+        body.theme-flat .divider {
+            background: #0078d4;
+        }
+        body.theme-flat .btn,
+        body.theme-flat .game-submit,
+        body.theme-flat .tag,
+        body.theme-flat .theme-toggle-btn,
+        body.theme-flat .theme-opt-btn,
+        body.theme-flat .game-btn {
+            background: #0078d4;
+            color: #fff;
+            border: none;
+            border-radius: 2px;
+            box-shadow: none;
+            backdrop-filter: none;
+        }
+        body.theme-flat .btn:hover,
+        body.theme-flat .game-submit:hover,
+        body.theme-flat .tag:hover,
+        body.theme-flat .theme-toggle-btn:hover,
+        body.theme-flat .theme-opt-btn:hover,
+        body.theme-flat .game-btn:hover {
+            background: #106ebe;
+        }
+        body.theme-flat .game-btn.active,
+        body.theme-flat .theme-opt-btn.active {
+            background: #005a9e;
+        }
+        body.theme-flat .video-card {
+            background: #fafafa;
+            backdrop-filter: none;
+            border: 1px solid #e0e0e0;
+            border-radius: 0;
+        }
+        body.theme-flat .video-card:hover {
+            background: #f0f0f0;
+        }
+        body.theme-flat .video-title {
+            color: #1a1a1a;
+        }
+        body.theme-flat .video-desc {
+            color: #666;
+        }
+        body.theme-flat .video-icon {
+            background: #e0e0e0;
+            border: none;
+        }
+        body.theme-flat .social a {
+            background: #0078d4;
+            color: #fff;
+            border: none;
+            border-radius: 2px;
+            box-shadow: none;
+            backdrop-filter: none;
+        }
+        body.theme-flat .social a:hover {
+            background: #106ebe;
+        }
+        body.theme-flat .slider-section {
+            background: #fafafa;
+            backdrop-filter: none;
+            border: 1px solid #e0e0e0;
+        }
+        body.theme-flat .slider-section-label {
+            color: #333;
+        }
+        body.theme-flat .slider-row label {
+            color: #333;
+        }
+        body.theme-flat .game-container {
+            background: #fafafa;
+            backdrop-filter: none;
+            border: 1px solid #e0e0e0;
+        }
+        body.theme-flat input[type="range"] {
+            background: #e0e0e0;
+            border: none;
+            backdrop-filter: none;
+        }
+        body.theme-flat input[type="range"]::-webkit-slider-thumb {
+            background: #0078d4;
+            border: none;
+            border-radius: 2px;
+            box-shadow: none;
+        }
+        body.theme-flat .hsv-input {
+            background: #fff;
+            border: 1px solid #ccc;
+            color: #000;
+        }
+        body.theme-flat .game-input {
+            background: #fff;
+            border: 1px solid #ccc;
+            color: #000;
+        }
+        body.theme-flat .hsv-warning {
+            color: #d00;
+        }
+        body.theme-flat pre {
+            background: #fafafa !important;
+            color: #000 !important;
+            border: 1px solid #e0e0e0 !important;
+        }
+        body.theme-flat .card a {
+            color: #0078d4;
+        }
+
+        /* ========== 主题：无 ========== */
+        body.theme-none {
+            background: #ffffff !important;
+        }
+        body.theme-none .card {
+            background: #ffffff;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        body.theme-none .card:hover {
+            background: #ffffff;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+        }
+        body.theme-none .name,
+        body.theme-none .title,
+        body.theme-none .bio,
+        body.theme-none .section-title,
+        body.theme-none .game-info,
+        body.theme-none .click-feedback,
+        body.theme-none .age,
+        body.theme-none .snake-controls {
+            color: #1a1a1a;
+            text-shadow: none;
+        }
+        body.theme-none .achievement-list li {
+            color: #333;
+        }
+        body.theme-none .achievement-list li::marker {
+            color: #666;
+        }
+        body.theme-none .divider {
+            background: #ccc;
+        }
+        body.theme-none .video-card {
+            background: #f9f9f9;
+            backdrop-filter: none;
+            border: 1px solid #e0e0e0;
+        }
+        body.theme-none .video-card:hover {
+            background: #f0f0f0;
+        }
+        body.theme-none .video-title {
+            color: #1a1a1a;
+        }
+        body.theme-none .video-desc {
+            color: #666;
+        }
+        body.theme-none .video-icon {
+            background: #e0e0e0;
+        }
+        body.theme-none .btn,
+        body.theme-none .game-submit,
+        body.theme-none .tag,
+        body.theme-none .theme-toggle-btn,
+        body.theme-none .theme-opt-btn,
+        body.theme-none .game-btn {
+            background: #e0e0e0;
+            color: #1a1a1a;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: none;
+            backdrop-filter: none;
+        }
+        body.theme-none .btn:hover,
+        body.theme-none .game-submit:hover,
+        body.theme-none .tag:hover,
+        body.theme-none .theme-toggle-btn:hover,
+        body.theme-none .theme-opt-btn:hover,
+        body.theme-none .game-btn:hover {
+            background: #d0d0d0;
+        }
+        body.theme-none .social a {
+            background: #e0e0e0;
+            color: #333;
+            border: 1px solid #ccc;
+            backdrop-filter: none;
+            box-shadow: none;
+        }
+        body.theme-none .social a:hover {
+            background: #d0d0d0;
+        }
+        body.theme-none .slider-section {
+            background: #f5f5f5;
+            backdrop-filter: none;
+            border: 1px solid #e0e0e0;
+        }
+        body.theme-none .slider-section-label {
+            color: #333;
+        }
+        body.theme-none .slider-row label {
+            color: #333;
+        }
+        body.theme-none .game-container {
+            background: #f9f9f9;
+            backdrop-filter: none;
+            border: 1px solid #e0e0e0;
+        }
+        body.theme-none .game-info {
+            color: #333;
+        }
+        body.theme-none .hsv-input {
+            background: #fff;
+            border: 1px solid #ccc;
+            color: #000;
+        }
+        body.theme-none .game-input {
+            background: #fff;
+            border: 1px solid #ccc;
+            color: #000;
+        }
+        body.theme-none .hsv-warning {
+            color: #c00;
+        }
+        body.theme-none .card a {
+            color: #333;
+        }
+        body.theme-none pre {
+            background: #f5f5f5 !important;
+            color: #000 !important;
+            border: 1px solid #e0e0e0 !important;
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                padding: 35px 24px;
+            }
+            .name { font-size: 24px; }
+            .avatar { width: 90px; height: 90px; }
+            .age { font-size: 10px; }
+            .snake-canvas {
+                max-width: 240px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas class="bubbles-canvas" id="bubblesCanvas"></canvas>
+
+    <div class="scroll-wrapper" id="scrollWrapper">
+        <div class="card">
+
+            <div class="avatar"></div>
+            <h1 class="name">NaSCN16</h1>
+            <p class="title">NaSCN16的小站</p>
+            <p class="age" id="cesium-age">计算中...</p>
+
+            <p class="bio">
+                up是个编程爱好者，洛谷有号，洛我！！！<br>
+                洛谷号：2204171
+            </p>
+
+            <div class="divider"></div>
+            <p class="section-title">🎋 每日抽签</p>
+            <div class="video-card" style="text-align:center;">
+                <div id="fortune-result" style="padding:10px 0;">
+                    <div id="fortune-level" style="font-size:28px; font-weight:bold; margin-bottom:8px;">🎋</div>
+                    <div id="fortune-event" style="font-size:15px; color:rgba(255,255,255,0.85);"></div>
+                    <div id="fortune-bad" style="font-size:13px; color:rgba(255,255,255,0.55); margin-top:6px;"></div>
+                </div>
+                <button class="game-submit" onclick="drawFortune()" id="fortune-btn">🎯 抽一支签</button>
+                <button class="game-submit" onclick="drawFortune(true)" style="margin-left:6px;">😤 我不服，重新测！</button>
+                <div style="font-size:11px; color:rgba(255,255,255,0.4); margin-top:6px;" id="fortune-date"></div>
+            </div>
+
+            <div class="divider"></div>
+
+            <p class="section-title">🎬 最推荐的视频</p>
+            <div class="video-card">
+                <a href="https://www.bilibili.com/video/BV1v1RLBuE1P/?spm_id_from=333.1387.homepage.video_card.click&vd_source=18102d474068e99e50f32049b13d697c" target="_blank">
+                    <div class="video-icon">▶</div>
+                    <div class="video-info">
+                        <div class="video-title">点击观看我最推荐的视频</div>
+                        <div class="video-desc">bilibili.com</div>
+                    </div>
+                </a>
+            </div>
+
+            <p class="section-title">主要成就</p>
+            <ul class="achievement-list">
+                <li>单视频 50k 播放量</li>
+                <li>GESP 1级 92分</li>
+                <li>单视频最高 1k 点赞</li>
+            </ul>
+
+            <div class="divider"></div>
+
+            <p class="section-title">技能</p>
+            <div class="tags">
+                <span class="tag">C++</span>
+                <span class="tag">画画</span>
+                <span class="tag">Python</span>
+                <span class="tag">做视频</span>
+            </div>
+
+            <p class="section-title">平时爱干啥</p>
+            <ul class="achievement-list">
+                <li>吃饭</li>
+                <li>睡觉</li>
+                <li><b>刷b站</b></li>
+                <li><b>编程</b></li>
+                <li><i>做视频</i></li>
+            </ul>
+
+            <button class="btn" id="click-btn">👆 点我</button>
+            <div class="click-feedback" id="feedback"></div>
+
+            <div class="slider-group" id="hsv-sliders">
+                <div class="slider-section">
+                    <div class="slider-section-label">🎨 颜色 1（顶部）</div>
+                    <div class="slider-row">
+                        <label>H</label>
+                        <input type="range" id="h1" min="0" max="360" value="196">
+                        <input type="text" class="hsv-input" id="h1-in" value="196">
+                    </div>
+                    <div class="slider-row">
+                        <label>S</label>
+                        <input type="range" id="s1" min="0" max="100" value="50">
+                        <input type="text" class="hsv-input" id="s1-in" value="0.50">
+                    </div>
+                    <div class="slider-row">
+                        <label>V</label>
+                        <input type="range" id="v1" min="0" max="100" value="75">
+                        <input type="text" class="hsv-input" id="v1-in" value="0.75">
+                    </div>
+                    <div class="color-preview" id="preview1" style="background:hsl(196,50%,75%);"></div>
+                </div>
+
+                <div class="slider-section">
+                    <div class="slider-section-label">🎨 颜色 2（底部）</div>
+                    <div class="slider-row">
+                        <label>H</label>
+                        <input type="range" id="h2" min="0" max="360" value="270">
+                        <input type="text" class="hsv-input" id="h2-in" value="270">
+                    </div>
+                    <div class="slider-row">
+                        <label>S</label>
+                        <input type="range" id="s2" min="0" max="100" value="55">
+                        <input type="text" class="hsv-input" id="s2-in" value="0.55">
+                    </div>
+                    <div class="slider-row">
+                        <label>V</label>
+                        <input type="range" id="v2" min="0" max="100" value="55">
+                        <input type="text" class="hsv-input" id="v2-in" value="0.55">
+                    </div>
+                    <div class="color-preview" id="preview2" style="background:hsl(270,55%,55%);"></div>
+                </div>
+
+                <div class="hsv-warning" id="hsv-warning"></div>
+            </div>
+
+            <div class="game-area">
+                <div class="divider"></div>
+                <p class="section-title">🎮 小游戏</p>
+                <div class="game-select">
+                    <button class="game-btn active" onclick="switchGame('guess')" id="guess-tab">🔢 猜数字</button>
+                    <button class="game-btn" onclick="switchGame('snake')" id="snake-tab">🐍 贪吃蛇</button>
+                </div>
+
+                <div class="game-container active" id="guess-game">
+                    <div class="game-info" id="guess-info">我想了一个 1~100 的数字，你猜猜看？</div>
+                    <div class="game-input-row">
+                        <input type="number" class="game-input" id="guess-input" placeholder="1-100" min="1" max="100">
+                        <button class="game-submit" onclick="guessNumber()">猜！</button>
+                    </div>
+                    <button class="game-submit" onclick="startGuess()" style="margin-top:8px;">🔄 重新开始</button>
+                </div>
+
+                <div class="game-container" id="snake-game">
+                    <canvas id="snake-canvas" width="300" height="300" class="snake-canvas"></canvas>
+                    <div class="snake-controls">点击画布控制方向 · 红色=障碍物 · 金色=食物</div>
+                    <div class="game-info" id="snake-score">分数：0（点击画布开始）</div>
+                    <button class="game-submit" onclick="startSnake()">🔄 重新开始</button>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+            <p class="section-title">🎨 自定义窗口</p>
+            <button class="theme-toggle-btn" onclick="toggleThemeOptions()">🖼 切换主题</button>
+            <div class="theme-options" id="themeOptions">
+                <button class="theme-opt-btn active" onclick="setTheme('gradient')">💎 液态玻璃</button>
+                <button class="theme-opt-btn" onclick="setTheme('neon')">💜 霓虹</button>
+                <button class="theme-opt-btn" onclick="setTheme('luna')">🪟 Luna</button>
+                <button class="theme-opt-btn" onclick="setTheme('flat')">🟦 扁平化</button>
+                <button class="theme-opt-btn" onclick="setTheme('bubbles')">🫧 泡泡</button>
+                <button class="theme-opt-btn" onclick="setTheme('rainbow')">🌈 彩色</button>
+                <button class="theme-opt-btn" onclick="setTheme('none')">🚫 无</button>
+            </div>
+
+            <div class="divider"></div>
+            <p class="section-title">📝 GESP三级C++示例</p>
+            <div class="video-card" style="text-align:left;">
+                <div style="color:rgba(255,255,255,0.6);font-size:12px;margin-bottom:8px;">这是一个GESP三级C++示例</div>
+                <pre style="background:#1e1e1e;color:#d4d4d4;border-radius:10px;padding:16px;font-family:'Courier New',monospace;font-size:13px;line-height:1.7;overflow-x:auto;white-space:pre;border:1px solid rgba(255,255,255,0.15);"><span style="color:#c586c0;">#include</span><span style="color:#9b9b9b;">&lt;</span><span style="color:#e8bf6a;">iostream</span><span style="color:#9b9b9b;">&gt;</span>
+<span style="color:#569cd6;">using</span> <span style="color:#569cd6;">namespace</span> std;
+
+<span style="color:#4ec9b0;">int</span> <span style="color:#dcdcaa;">main</span>()
+{
+    <span style="color:#4ec9b0;">int</span> size;
+    cin &gt;&gt; size;
+    <span style="color:#4ec9b0;">int</span> ina[size];
+    <span style="color:#4ec9b0;">int</span> ona[size];
+    <span style="color:#569cd6;">for</span>(<span style="color:#4ec9b0;">int</span> i=<span style="color:#b5cea8;">0</span>;i&lt;size;i++){
+        cin &gt;&gt; ina[i];
+    }
+    <span style="color:#4ec9b0;">int</span> pba[<span style="color:#b5cea8;">10</span>];
+    <span style="color:#569cd6;">for</span>(<span style="color:#4ec9b0;">int</span> i=<span style="color:#b5cea8;">0</span>;i&lt;<span style="color:#b5cea8;">10</span>;i++){
+        cin &gt;&gt; pba[i];
+    }
+    <span style="color:#569cd6;">for</span>(<span style="color:#4ec9b0;">int</span> i=<span style="color:#b5cea8;">0</span>;i&lt;size;i++){
+        <span style="color:#569cd6;">for</span>(<span style="color:#4ec9b0;">int</span> j=<span style="color:#b5cea8;">0</span>;j&lt;<span style="color:#b5cea8;">10</span>;j++){
+            <span style="color:#569cd6;">if</span>(ina[i]==j)ona[i]=pba[j];
+        }
+    }
+    <span style="color:#569cd6;">for</span>(<span style="color:#4ec9b0;">int</span> i=<span style="color:#b5cea8;">0</span>;i&lt;size;i++)cout &lt;&lt; ona[i] &lt;&lt; <span style="color:#ce9178;">" "</span>;
+    <span style="color:#569cd6;">return</span> <span style="color:#b5cea8;">0</span>;
+}</pre>
+                <div style="text-align:center;margin-top:12px;">
+                    <a href="https://www.luogu.com.cn/problem/B4555" target="_blank" class="game-submit" style="text-decoration:none;">想看题目？点这里</a>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+            <p class="section-title">🚅 网络高铁</p>
+
+            <div class="video-card">
+                <a href="https://space.bilibili.com" target="_blank">
+                    <div class="video-icon">📺</div>
+                    <div class="video-info">
+                        <div class="video-title">去B站</div>
+                        <div class="video-desc">bilibili.com</div>
+                    </div>
+                </a>
+            </div>
+            <div class="video-card">
+                <a href="https://www.baidu.com" target="_blank">
+                    <div class="video-icon">🔍</div>
+                    <div class="video-info">
+                        <div class="video-title">百度亿下😱</div>
+                        <div class="video-desc">baidu.com</div>
+                    </div>
+                </a>
+            </div>
+            <div class="video-card">
+                <a href="https://www.pcjs.org" target="_blank">
+                    <div class="video-icon">💾</div>
+                    <div class="video-info">
+                        <div class="video-title">体验老版DOS</div>
+                        <div class="video-desc">pcjs.org</div>
+                    </div>
+                </a>
+            </div>
+            <div class="video-card">
+                <a href="https://www.luogu.com.cn" target="_blank">
+                    <div class="video-icon">💻</div>
+                    <div class="video-info">
+                        <div class="video-title"><b>洛谷刷题</b></div>
+                        <div class="video-desc">luogu.com.cn</div>
+                    </div>
+                </a>
+            </div>
+            <div class="video-card">
+                <a href="https://www.deepseek.com" target="_blank">
+                    <div class="video-icon">🐋</div>
+                    <div class="video-info">
+                        <div class="video-title">体验DS🐋</div>
+                        <div class="video-desc">deepseek.com</div>
+                    </div>
+                </a>
+            </div>
+            <div class="video-card">
+                <a href="https://www.desmos.com" target="_blank">
+                    <div class="video-icon">📐</div>
+                    <div class="video-info">
+                        <div class="video-title">专业数学</div>
+                        <div class="video-desc">desmos.com</div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="game-input-row" style="margin-top:12px;">
+                <input type="text" class="game-input" id="custom-url" placeholder="你要去什么网址？" style="width:200px;">
+                <button class="game-submit" onclick="goToUrl()">启航！</button>
+            </div>
+
+            <a href="https://space.bilibili.com/692982282" target="_blank" class="btn" style="margin-top:20px;">了解更多</a>
+
+            <div class="social">
+                <a href="https://space.bilibili.com/692982282" target="_blank" title="bilibili">B</a>
+                <a href="https://www.luogu.com.cn/user/2204171" target="_blank" title="洛谷">洛</a>
+                <a href="https://wpa.qq.com/msgrd?v=3&uin=507777043" target="_blank" title="QQ">Q</a>
+                <a href="mailto:nascn16@163.com" title="邮箱">@</a>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const birthDate = new Date(2016, 8, 2, 0, 25, 0);
+        const CESIUM_PER_SEC = 9192631770;
+        function updateAge() {
+            const now = new Date();
+            const diffSec = (now - birthDate) / 1000;
+            const cycles = diffSec * CESIUM_PER_SEC;
+            document.getElementById('cesium-age').innerHTML = '⚛ 铯原子年龄<br>' + cycles.toExponential(6) + ' 个周期';
+        }
+        updateAge();
+        setInterval(updateAge, 100);
+
+        const clickBtn = document.getElementById('click-btn');
+        const fb = document.getElementById('feedback');
+        let clickCount = 0;
+        let clickTimes = [];
+        clickBtn.addEventListener('click', () => {
+            clickCount++;
+            const now = Date.now();
+            clickTimes.push(now);
+            clickTimes = clickTimes.filter(t => now - t < 3000);
+            fb.innerHTML = '你点了我 <b>' + clickCount + '</b> 下！';
+            if (clickTimes.length >= 10) {
+                fb.innerHTML += '<br><span class="fast-text">⚡ 你点的好快！</span>';
+                setTimeout(() => {
+                    const fastSpan = fb.querySelector('.fast-text');
+                    if (fastSpan) fastSpan.remove();
+                }, 5000);
+            }
+        });
+
+        function bindHSV(sliderId, inputId, isH) {
+            const slider = document.getElementById(sliderId);
+            const input = document.getElementById(inputId);
+            slider.addEventListener('input', () => {
+                if (isH) input.value = slider.value;
+                else input.value = (parseInt(slider.value) / 100).toFixed(2);
+                updateCurrentThemeBg();
+            });
+            input.addEventListener('change', () => {
+                let val = parseFloat(input.value);
+                if (isH) {
+                    val = Math.round(val);
+                    if (isNaN(val)) val = 0;
+                    val = Math.max(0, Math.min(360, val));
+                    slider.value = val;
+                    input.value = val;
+                } else {
+                    if (isNaN(val)) val = 0;
+                    val = Math.max(0, Math.min(1, val));
+                    slider.value = Math.round(val * 100);
+                    input.value = val.toFixed(2);
+                }
+                updateCurrentThemeBg();
+            });
+        }
+        bindHSV('h1', 'h1-in', true);
+        bindHSV('s1', 's1-in', false);
+        bindHSV('v1', 'v1-in', false);
+        bindHSV('h2', 'h2-in', true);
+        bindHSV('s2', 's2-in', false);
+        bindHSV('v2', 'v2-in', false);
+
+        function getColorValues() {
+            return {
+                h1: parseInt(document.getElementById('h1').value),
+                s1: parseInt(document.getElementById('s1').value) / 100,
+                v1: parseInt(document.getElementById('v1').value) / 100,
+                h2: parseInt(document.getElementById('h2').value),
+                s2: parseInt(document.getElementById('s2').value) / 100,
+                v2: parseInt(document.getElementById('v2').value) / 100
+            };
+        }
+
+        function updatePreviews() {
+            const c = getColorValues();
+            document.getElementById('preview1').style.background = 'hsl(' + c.h1 + ', ' + (c.s1*100) + '%, ' + (c.v1*100) + '%)';
+            document.getElementById('preview2').style.background = 'hsl(' + c.h2 + ', ' + (c.s2*100) + '%, ' + (c.v2*100) + '%)';
+            const hDist = Math.min(Math.abs(c.h1 - c.h2), 360 - Math.abs(c.h1 - c.h2));
+            const sDist = Math.abs(c.s1 - c.s2);
+            const vDist = Math.abs(c.v1 - c.v2);
+            document.getElementById('hsv-warning').textContent =
+                (hDist < 5 && sDist < 0.5 && vDist < 0.5) ? '⚠ 这两个颜色有点接近！' : '';
+        }
+
+        function updateCurrentThemeBg() {
+            updatePreviews();
+            const c = getColorValues();
+            const c1 = 'hsl(' + c.h1 + ', ' + (c.s1*100) + '%, ' + (c.v1*100) + '%)';
+            const c2 = 'hsl(' + c.h2 + ', ' + (c.s2*100) + '%, ' + (c.v2*100) + '%)';
+            const c2d = 'hsl(' + c.h2 + ', ' + (c.s2*100) + '%, ' + Math.max(5, c.v2*100 - 25) + '%)';
+
+            if (currentTheme === 'gradient') {
+                document.body.style.background = 'linear-gradient(180deg, ' + c1 + ' 0%, ' + c2 + ' 50%, ' + c2d + ' 100%)';
+            } else if (currentTheme === 'neon') {
+                const neonColor = c2;
+                const neonAlpha = 'hsl(' + c.h2 + ', ' + (c.s2*100) + '%, ' + (c.v2*100) + '%)';
+                document.documentElement.style.setProperty('--neon-glow', neonAlpha);
+                document.documentElement.style.setProperty('--neon-glow-alpha', 'hsl(' + c.h2 + ', ' + (c.s2*100) + '%, ' + Math.max(2, c.v2*100 - 30) + '%)');
+                document.documentElement.style.setProperty('--neon-glow-alpha2', 'hsl(' + c.h2 + ', ' + (c.s2*100) + '%, ' + Math.max(1, c.v2*100 - 50) + '%)');
+                document.body.style.background = '#000';
+            }
+        }
+
+        let bubblesAnimId = null;
+        let bubblesBurst = [];
+        function startBubbles() {
+            const canvas = document.getElementById('bubblesCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            const bubbles = [];
+            const colors = ['rgba(255,100,150,0.5)','rgba(100,150,255,0.5)','rgba(150,255,100,0.5)','rgba(255,200,50,0.5)','rgba(200,50,255,0.5)','rgba(50,255,200,0.5)','rgba(255,150,50,0.5)','rgba(150,50,255,0.5)'];
+            for (let i=0;i<25;i++) {
+                bubbles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*30+10,vx:(Math.random()-0.5)*0.8,vy:(Math.random()-0.5)*0.8-0.3,color:colors[Math.floor(Math.random()*colors.length)]});
+            }
+            function animate() {
+                if (currentTheme!=='bubbles') { bubblesAnimId=null; return; }
+                ctx.clearRect(0,0,canvas.width,canvas.height);
+                bubbles.forEach(b=>{
+                    b.x+=b.vx;b.y+=b.vy;
+                    if(b.x<-b.r)b.x=canvas.width+b.r;if(b.x>canvas.width+b.r)b.x=-b.r;
+                    if(b.y<-b.r)b.y=canvas.height+b.r;if(b.y>canvas.height+b.r)b.y=-b.r;
+                    ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,Math.PI*2);ctx.fillStyle=b.color;ctx.fill();
+                    ctx.strokeStyle='rgba(255,255,255,0.3)';ctx.lineWidth=1;ctx.stroke();
+                    ctx.beginPath();ctx.arc(b.x-b.r*0.3,b.y-b.r*0.3,b.r*0.2,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,0.4)';ctx.fill();
+                });
+                for(let i=bubblesBurst.length-1;i>=0;i--){
+                    const p=bubblesBurst[i];p.x+=p.vx;p.y+=p.vy;p.life-=0.02;
+                    if(p.life<=0){bubblesBurst.splice(i,1);continue;}
+                    ctx.beginPath();ctx.arc(p.x,p.y,p.r*p.life,0,Math.PI*2);ctx.fillStyle=p.color.replace('0.5',String(p.life*0.5));ctx.fill();
+                }
+                bubblesAnimId=requestAnimationFrame(animate);
+            }
+            animate();
+        }
+        document.addEventListener('click',function(e){
+            if(currentTheme!=='bubbles')return;
+            const colors=['rgba(255,100,150,0.5)','rgba(100,150,255,0.5)','rgba(150,255,100,0.5)','rgba(255,200,50,0.5)','rgba(200,50,255,0.5)','rgba(50,255,200,0.5)'];
+            for(let i=0;i<12;i++) bubblesBurst.push({x:e.clientX,y:e.clientY,r:Math.random()*8+3,vx:(Math.random()-0.5)*6,vy:(Math.random()-0.5)*6,life:1,color:colors[Math.floor(Math.random()*colors.length)]});
+        });
+
+        let currentTheme = 'gradient';
+        function toggleThemeOptions() {
+            document.getElementById('themeOptions').classList.toggle('show');
+        }
+        function setTheme(theme) {
+            currentTheme = theme;
+            const body = document.body;
+            const canvas = document.getElementById('bubblesCanvas');
+            const hsvSliders = document.getElementById('hsv-sliders');
+            body.classList.remove('theme-neon','theme-luna','theme-flat','theme-none');
+            body.style.background = '';
+            if (bubblesAnimId) { cancelAnimationFrame(bubblesAnimId); bubblesAnimId = null; }
+            canvas.style.display = 'none';
+            document.querySelectorAll('.theme-opt-btn').forEach(b=>b.classList.remove('active'));
+            const themes=['gradient','neon','luna','flat','bubbles','rainbow','none'];
+            const idx=themes.indexOf(theme);
+            if(idx>=0)document.querySelectorAll('.theme-opt-btn')[idx].classList.add('active');
+            if(theme==='luna'||theme==='flat'||theme==='none'){hsvSliders.style.opacity='0.4';hsvSliders.style.pointerEvents='none';}
+            else {hsvSliders.style.opacity='1';hsvSliders.style.pointerEvents='auto';}
+            switch(theme){
+                case 'gradient': updateCurrentThemeBg(); break;
+                case 'neon': body.classList.add('theme-neon'); updateCurrentThemeBg(); break;
+                case 'luna': body.classList.add('theme-luna'); body.style.background='#ece9d8'; break;
+                case 'flat': body.classList.add('theme-flat'); break;
+                case 'bubbles': body.style.background='#0a0a2e'; canvas.style.display='block'; startBubbles(); break;
+                case 'rainbow': applyRainbow(); break;
+                case 'none': body.classList.add('theme-none'); break;
+            }
+        }
+        function applyRainbow() {
+            const steps=36;let grad='linear-gradient(180deg';
+            for(let i=0;i<=steps;i++){const h=Math.round((i/steps)*360);const pct=Math.round((i/steps)*100);grad+=', hsl('+h+', 100%, 50%) '+pct+'%';}
+            grad+=')';document.body.style.background=grad;
+        }
+
+        function switchGame(game) {
+            document.getElementById('guess-game').classList.remove('active');
+            document.getElementById('snake-game').classList.remove('active');
+            document.getElementById('guess-tab').classList.remove('active');
+            document.getElementById('snake-tab').classList.remove('active');
+            if (game === 'guess') {
+                document.getElementById('guess-game').classList.add('active');
+                document.getElementById('guess-tab').classList.add('active');
+            } else {
+                document.getElementById('snake-game').classList.add('active');
+                document.getElementById('snake-tab').classList.add('active');
+                startSnake();
+            }
+        }
+
+        let secretNum, guessCount;
+        function startGuess() {
+            secretNum = Math.floor(Math.random() * 100) + 1;
+            guessCount = 0;
+            document.getElementById('guess-info').textContent = '我想了一个 1~100 的数字，你猜猜看？';
+            document.getElementById('guess-input').value = '';
+        }
+        function guessNumber() {
+            const input = document.getElementById('guess-input');
+            const guess = parseInt(input.value);
+            if (isNaN(guess) || guess < 1 || guess > 100) {
+                document.getElementById('guess-info').textContent = '请输入 1~100 的数字！';
+                return;
+            }
+            guessCount++;
+            if (guess === secretNum) {
+                document.getElementById('guess-info').textContent = '🎉 恭喜！你猜了 ' + guessCount + ' 次就猜对了！';
+            } else if (guess < secretNum) {
+                document.getElementById('guess-info').textContent = '第 ' + guessCount + ' 次：太小了，再大一点！';
+            } else {
+                document.getElementById('guess-info').textContent = '第 ' + guessCount + ' 次：太大了，再小一点！';
+            }
+            input.value = '';
+            input.focus();
+        }
+        document.getElementById('guess-input').addEventListener('keydown', e => { if (e.key === 'Enter') guessNumber(); });
+
+        const canvas = document.getElementById('snake-canvas');
+        const ctx = canvas.getContext('2d');
+        const GRID = 20, CELL = canvas.width / GRID;
+        let snake, snakeTarget, snakeFood, obstacles, snakeScore, snakeInterval, snakeRunning, snakeStarted;
+        function isOnSnake(x, y, includeHead) {
+            const start = includeHead ? 0 : 1;
+            for (let i = start; i < snake.length; i++) if (snake[i].x === x && snake[i].y === y) return true;
+            return false;
+        }
+        function isOnObstacle(x, y) { return obstacles.some(o => o.x === x && o.y === y); }
+        function isNearSnake(x, y, dist) {
+            for (let s of snake) if (Math.abs(s.x - x) <= dist && Math.abs(s.y - y) <= dist) return true;
+            return false;
+        }
+        function spawnFood() {
+            let fx, fy, tries = 0;
+            do { fx = Math.floor(Math.random()*GRID); fy = Math.floor(Math.random()*GRID); tries++; if (tries>1000) break; }
+            while (isOnSnake(fx, fy, true) || isOnObstacle(fx, fy));
+            snakeFood = {x: fx, y: fy};
+        }
+        function spawnObstacles() {
+            obstacles = [];
+            const num = 5 + Math.floor(snakeScore/30);
+            let attempts = 0;
+            while (obstacles.length < num && attempts < 1000) {
+                const ox = Math.floor(Math.random()*GRID), oy = Math.floor(Math.random()*GRID);
+                if (!isNearSnake(ox, oy, 1) && !(snakeFood && snakeFood.x===ox && snakeFood.y===oy) && !isOnObstacle(ox, oy))
+                    obstacles.push({x: ox, y: oy});
+                attempts++;
+            }
+        }
+        function startSnake() {
+            if (snakeInterval) clearInterval(snakeInterval);
+            snake = [{x:10,y:10}]; snakeTarget = {x:10,y:10}; snakeScore = 0;
+            snakeRunning = false; snakeStarted = false; obstacles = []; snakeFood = null;
+            document.getElementById('snake-score').textContent = '分数：0（点击画布开始）';
+            spawnFood(); spawnObstacles(); drawSnake();
+            snakeInterval = setInterval(snakeStep, 140);
+        }
+        function snakeStep() {
+            if (!snakeStarted || !snakeRunning) { drawSnake(); return; }
+            const head = snake[0], dx = snakeTarget.x - head.x, dy = snakeTarget.y - head.y;
+            if (dx===0 && dy===0) { drawSnake(); return; }
+            let nx=head.x, ny=head.y;
+            if (dx!==0) nx+=dx>0?1:-1; else if (dy!==0) ny+=dy>0?1:-1;
+            if (nx<0||nx>=GRID||ny<0||ny>=GRID) { snakeRunning=false; document.getElementById('snake-score').textContent='💀 撞墙了！分数：'+snakeScore; drawSnake(); return; }
+            for (let i=0;i<snake.length;i++) if (snake[i].x===nx && snake[i].y===ny) { snakeRunning=false; document.getElementById('snake-score').textContent='💀 撞到自己！分数：'+snakeScore; drawSnake(); return; }
+            if (isOnObstacle(nx,ny)) { snakeRunning=false; document.getElementById('snake-score').textContent='💀 撞到障碍物！分数：'+snakeScore; drawSnake(); return; }
+            snake.unshift({x:nx,y:ny});
+            if (snakeFood && nx===snakeFood.x && ny===snakeFood.y) { snakeScore+=10; document.getElementById('snake-score').textContent='分数：'+snakeScore; spawnFood(); spawnObstacles(); }
+            else snake.pop();
+            drawSnake();
+        }
+        function drawSnake() {
+            ctx.fillStyle='rgba(0,0,0,0.35)'; ctx.fillRect(0,0,canvas.width,canvas.height);
+            ctx.fillStyle='rgba(255,80,80,0.5)'; obstacles.forEach(o=>ctx.fillRect(o.x*CELL+2,o.y*CELL+2,CELL-4,CELL-4));
+            snake.forEach((s,i)=>{ ctx.fillStyle=i===0?'#ffffff':'rgba(255,255,255,0.6)'; ctx.fillRect(s.x*CELL+2,s.y*CELL+2,CELL-4,CELL-4); });
+            if (snakeFood) { ctx.fillStyle='#ffd700'; ctx.beginPath(); ctx.arc(snakeFood.x*CELL+CELL/2,snakeFood.y*CELL+CELL/2,CELL/2-2,0,Math.PI*2); ctx.fill(); }
+        }
+        function handleCanvasClick(e) {
+            if (!document.getElementById('snake-game').classList.contains('active')) return;
+            const rect = canvas.getBoundingClientRect();
+            const sx=canvas.width/rect.width, sy=canvas.height/rect.height;
+            const cx=e.touches?e.touches[0].clientX:e.clientX, cy=e.touches?e.touches[0].clientY:e.clientY;
+            const mx=(cx-rect.left)*sx, my=(cy-rect.top)*sy;
+            const gx=Math.floor(mx/CELL), gy=Math.floor(my/CELL);
+            if (gx>=0&&gx<GRID&&gy>=0&&gy<GRID) {
+                snakeTarget={x:gx,y:gy};
+                if (!snakeStarted) { snakeStarted=true; snakeRunning=true; document.getElementById('snake-score').textContent='分数：'+snakeScore; }
+            }
+        }
+        canvas.addEventListener('click', handleCanvasClick);
+        canvas.addEventListener('touchstart', e => { e.preventDefault(); handleCanvasClick(e); });
+
+        function goToUrl() {
+            let url = document.getElementById('custom-url').value.trim();
+            if (!url) { alert('请输入网址！'); return; }
+            if (!url.startsWith('http://') && !url.startsWith('https://')) url = 'https://' + url;
+            window.open(url, '_blank');
+        }
+
+        (function() {
+            const goodList = [
+                {event:"把把吃鸡",desc:"终于吃上了"},{event:"NOI过过过",desc:"随便玩，都是金牌"},
+                {event:"写题解",desc:"青青草原，没有WA"},{event:"玩MC",desc:"转角遇到大钻石"},
+                {event:"看B站",desc:"遇到宝藏up"},{event:"考试",desc:"考的都会，蒙的全对"},
+                {event:"抽卡",desc:"把把中隐藏"},{event:"玩游戏",desc:"碰见心仪好友"},{event:"彩票",desc:"一等奖"}
+            ];
+            const badList = [
+                {event:"写题解",desc:"青wa叫"},{event:"玩MC",desc:"转角看见苦力怕"},
+                {event:"吃饭",desc:"喝凉水都塞牙"},{event:"看手机",desc:"手机砸脸上"},
+                {event:"玩游戏",desc:"把把连跪"},{event:"写作业",desc:"这是老师讲的？"},
+                {event:"考试",desc:"教的1+1，考的造宇宙"},{event:"看手机",desc:"被爸妈发现"},
+                {event:"听讲",desc:"包被发现你睡觉"}
+            ];
+            const levels=["§大吉§","§中吉§","§小吉§","§还行§","§凶§","§大凶§"];
+            const colors=["#ff4444","#ff8888","#ffaaaa","#ffffff","#999999","#333333"];
+            function getDaySeed(){const d=new Date();return d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();}
+            function seededRandom(seed){let s=seed;return function(){s=(s*1103515245+12345)&0x7fffffff;return s/0x7fffffff;};}
+            window.drawFortune = function(reroll) {
+                const rand = seededRandom(reroll ? Date.now() : getDaySeed());
+                const r = rand();
+                let li = r<0.15?0:r<0.30?5:r<0.45?1:r<0.60?4:r<0.78?2:3;
+                const ge = goodList[Math.floor(rand()*goodList.length)];
+                let be; do { be = badList[Math.floor(rand()*badList.length)]; } while (be.event===ge.event);
+                document.getElementById('fortune-level').innerHTML='<span style="color:'+colors[li]+';">'+levels[li]+'</span>';
+                if (li===0) {
+                    document.getElementById('fortune-event').innerHTML='<span style="color:#ff4444;">吉：'+ge.event+'</span> — '+ge.desc;
+                    document.getElementById('fortune-bad').textContent='万事皆宜，没有凶事';
+                } else if (li===5) {
+                    document.getElementById('fortune-event').textContent='万事皆凶';
+                    document.getElementById('fortune-bad').innerHTML='<span style="color:#333;">凶：'+be.event+'</span> — '+be.desc;
+                } else {
+                    document.getElementById('fortune-event').innerHTML='<span style="color:#ff4444;">吉：'+ge.event+'</span> — '+ge.desc;
+                    document.getElementById('fortune-bad').innerHTML='<span style="color:#999;">凶：'+be.event+'</span> — '+be.desc;
+                }
+                document.getElementById('fortune-date').textContent=(reroll?'手动重抽 · ':'今日签文 · ')+new Date().toLocaleString();
+            };
+            drawFortune(false);
+        })();
+
+        startGuess();
+        setTimeout(updateCurrentThemeBg, 100);
+    </script>
+</body>
+</html>
